@@ -2,16 +2,23 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
+import com.sky.entity.Dish;
+import com.sky.entity.Setmeal;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.CategoryMapper;
+import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.CategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +27,10 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     CategoryMapper categoryMapper;
-
+    @Autowired
+    DishMapper dishMapper;
+    @Autowired
+    SetmealMapper setmealMapper;
     /**
      * 分页查询业务实现
      * @param categoryPageQueryDTO
@@ -55,11 +65,10 @@ public class CategoryServiceImpl implements CategoryService {
         } else{
             category.setType(1);
         }
-        //防止这里的sort可以相同
 
 
-        category.setUpdateTime(LocalDateTime.now());
-        category.setUpdateUser(BaseContext.getCurrentId());
+
+
         categoryMapper.update(category);
     }
 
@@ -84,10 +93,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void addCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
         BeanUtils.copyProperties(categoryDTO, category);
-        category.setCreateTime(LocalDateTime.now());
-        category.setUpdateTime(LocalDateTime.now());
-        category.setUpdateUser(BaseContext.getCurrentId());
-        category.setCreateUser(BaseContext.getCurrentId());
+
         category.setStatus(0);
         categoryMapper.addCategory(category);
     }
@@ -97,8 +103,29 @@ public class CategoryServiceImpl implements CategoryService {
      * @param id
      */
     @Override
+    @Transactional
     public void deleteCategoryById(Long id) {
+        List<Dish> list = dishMapper.getByCategoryId(id.intValue());
+        if (list != null && list.size() > 0) {
+            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_DISH);
+        }
+        List<Setmeal> list2 = setmealMapper.getByCategoryId(id);
+        if (list2 != null && list2.size() > 0) {
+            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);
+        }
         categoryMapper.deleteCategoryById(id);
+    }
+
+    /**
+     * 根据类型查询分类
+     * @param type
+     * @return
+     */
+    @Override
+    public List<Category> selectByType(Integer type) {
+
+        List<Category> list= categoryMapper.selectByType(type);
+        return list;
     }
 
 
