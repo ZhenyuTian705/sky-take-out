@@ -55,4 +55,11 @@ public interface DishService {
      * @return
      */
     List<Dish> getByCategoryId(Integer categoryId);
+
+    /**
+     * 和上面方法不同在于返回VO
+     * @param categoryId
+     * @return
+     */
+    List<DishVO> getDishesByCategoryId(int categoryId);
 }
