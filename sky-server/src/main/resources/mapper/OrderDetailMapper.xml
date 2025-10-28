@@ -11,4 +11,15 @@
             (#{od.name},#{od.image},#{od.orderId},#{od.dishId},#{od.setmealId},#{od.dishFlavor},#{od.number},#{od.amount})
         </foreach>
     </insert>
+    <select id="getTop10" resultType="com.sky.dto.GoodsSalesDTO">
+        SELECT
+            od.name AS name,
+            COUNT(*) AS number  -- 使用COUNT(*)更高效
+        FROM order_detail od
+                 JOIN orders o ON od.order_id = o.id
+        WHERE o.order_time BETWEEN #{min} AND #{max}
+        GROUP BY od.name
+        ORDER BY number DESC
+            limit 0, 10;
+    </select>
 </mapper>

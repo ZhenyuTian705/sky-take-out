@@ -34,4 +34,41 @@
         </set>
         where id = #{id}
     </update>
+    <select id="page" resultType="com.sky.vo.OrderVO">
+        select * from orders
+        <where>
+            <if test="status!=null">
+                status=#{status}
+            </if>
+        </where>
+    </select>
+    <select id="sumByMap" resultType="java.lang.Double">
+        select sum(amount) from orders
+        <where>
+            <if test="min!=null">
+                and order_time &gt; #{min}
+            </if>
+            <if test="max!=null">
+                and order_time &lt; #{max}
+            </if>
+            <if test="status!=null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="sumNumberByMap" resultType="java.lang.Integer">
+        select count(*) from orders
+        <where>
+            <if test="min!=null">
+                and order_time &gt; #{min}
+            </if>
+            <if test="max!=null">
+                and order_time &lt; #{max}
+            </if>
+            <if test="status!=null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
 </mapper>

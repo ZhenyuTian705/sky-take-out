@@ -7,5 +7,16 @@
         insert into user (openid,name,phone,sex,id_number,avatar,create_time)
         values (#{openid},#{name},#{phone},#{sex},#{idNumber},#{avatar},#{createTime})
     </insert>
+    <select id="sumByMap" resultType="java.lang.Double">
+        select count(*) from user
+        <where>
+            <if test="min!=null">
+                and create_time &gt; #{min}
+            </if>
+            <if test="max!=null">
+                and create_time &lt; #{max}
+            </if>
+        </where>
+    </select>
 
 </mapper>

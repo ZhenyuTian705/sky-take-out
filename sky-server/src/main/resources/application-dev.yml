@@ -28,3 +28,6 @@ sky:
     wechatPayCertFilePath: D:\pay\wechatpay_166D96F876F45C7D07CE98952A96EC980368ACFC.pem
     notifyUrl: https://3390fed4.rl.cpolar.top/notify/paySuccess
     refundNotifyUrl: https://3390fed4.rl.cpolar.top/notify/refundSuccess
+  shop:
+    address: 安徽省合肥市蜀山区安徽建筑大学
+    ak: guLexxL48DOTv2IfPc0OWRVXOe8OHTML

@@ -25,4 +25,6 @@ public interface ShoppingCartMapper {
 
     @Delete("delete from shopping_cart where user_id=#{currenId}")
     void cleanByUserId(Long currentId);
+
+    void insertShoppingCartList(List<ShoppingCart> shoppingCarts);
 }

@@ -30,5 +30,6 @@ public interface AddressBookMapper {
     @Delete("delete from address_book where id=#{id}")
     void deleteById(Long id);
 
-
+    @Select("select * from address_book where id=#{addressBookId}")
+    AddressBook getById(Long addressBookId);
 }
