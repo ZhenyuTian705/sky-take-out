@@ -7,7 +7,7 @@
         insert into user (openid,name,phone,sex,id_number,avatar,create_time)
         values (#{openid},#{name},#{phone},#{sex},#{idNumber},#{avatar},#{createTime})
     </insert>
-    <select id="sumByMap" resultType="java.lang.Double">
+    <select id="sumByMap" resultType="java.lang.Integer">
         select count(*) from user
         <where>
             <if test="min!=null">

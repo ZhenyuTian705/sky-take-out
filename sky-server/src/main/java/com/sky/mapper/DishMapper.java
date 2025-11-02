@@ -60,4 +60,6 @@ public interface DishMapper {
      * @return
      */
     List<Dish> getBySetmealId(Long id);
+    @Select("SELECT status from dish")
+    List<Integer> getAllStatus();
 }
